@@ -29,13 +29,14 @@ int print_i(
 
 	integer = va_arg(ap, int);
 	is_neg = 0;
-	in = integer;
 	if (integer < 0)
 	{
 		in = integer * -1;
 		ibuf = handl_buf(buffer, '-', ibuf);
 		is_neg = 1;
 	}
+	else
+		in = integer;
 
 	temp = in;
 	div = 1;
