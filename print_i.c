@@ -1,6 +1,55 @@
 #include "main.h"
 
 /**
+ * reverse - reverse string
+ * @str: buffer
+ * @length: length of string
+ */
+void reverse(char *str, int length)
+{
+	int start = 0;
+	int end = length - 1;
+
+	while (start < end)
+	{
+		char temp = str[start];
+
+		str[start] = str[end];
+		str[end] = temp;
+		start++;
+		end--;
+	}
+}
+
+/**
+ * _itoa - convert number to integer
+ * @num: integer
+ * @str: buffer
+ */
+void _itoa(int num, char *str)
+{
+	int i = 0;
+	int isNegative = 0;
+
+	if (num < 0)
+	{
+		isNegative = 1;
+		num = -num;
+	}
+
+	do {
+		str[i++] = num % 10 + '0';
+		num /= 10;
+	} while (num > 0);
+
+	if (isNegative)
+		str[i++] = '-';
+	str[i] = '\0';
+
+	reverse(str, i);
+}
+
+/**
  * print_i - print int
  * @ap: va_list
  * @buffer: string buffer
@@ -17,8 +66,9 @@ int print_i(
 	int str_length
 )
 {
-	int integer, ibuf = 0;
-	unsigned int in, temp, j, div, is_neg;
+	int integer, ibuf = 0, j = 0;
+	unsigned int in, is_neg;
+	char buf[B_SIZE];
 
 	UNUSED(i);
 	UNUSED(precision);
@@ -32,22 +82,17 @@ int print_i(
 	if (integer < 0)
 	{
 		in = integer * -1;
-		ibuf = handl_buf(buffer, '-', ibuf);
+		ibuf = write(1, "-", 1);
 		is_neg = 1;
 	}
 	else
 		in = integer;
 
-	temp = in;
-	div = 1;
-	while (temp > 9)
-	{
-		div *= 10;
-		temp /= 10;
-	}
-
-	for (j = 0; div > 0; div /= 10, j++)
-		ibuf = handl_buf(buffer, ((in / div) % 10) + '0', ibuf);
-
-	return (j + is_neg);
+	_itoa(in, buf);
+	ibuf = 0;
+	while (buf[ibuf])
+		ibuf++;
+	j =  (ibuf + is_neg);
+	write_str(buf, &ibuf);
+	return (j);
 }
