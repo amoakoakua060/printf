@@ -43,6 +43,7 @@ typedef struct f_spec f_spec_t;
 * struct arg_s - struct for arguments
 * @str: buffer string
 * @vp: va_list
+* @i: int counter
 * @flags: integer
 * @precision: integer
 * @width: integer
